@@ -120,22 +120,6 @@ class Product_Images(models.Model):
 
 ########################################################################
 ########################################################################
-########################################################################
-########################################################################
-########################################################################
-
-
-# class Order():
-#     user = models.ForeignKey(
-#         customUser, on_delete=models.CASCADE, related_name='order_of_user')
-#     product = models.ForeignKey(
-#         Product, on_delete=models.CASCADE, related_name='order_products')
-#     quantity = models.IntegerField(default=0)
-#     order_price = models.DecimalField(max_digits=12, decimal_places=2)
-#     paid_status = models.BooleanField(default=False)
-#     order_date = models.DateTimeField(auto_now_add=True)
-#     order_status = models.CharField(
-#         max_length=20, choices=order_Status_Choices, default='processing')
 
 
 class Order(models.Model):
@@ -162,9 +146,9 @@ class CartOrderItems(models.Model):
     item = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=0)
     price = models.DecimalField(
-        max_digits=9999999, decimal_places=2, default="1.99")
+        max_digits=100, decimal_places=2, default="1.99")
     total = models.DecimalField(
-        max_digits=9999999, decimal_places=2, default="1.99")
+        max_digits=100, decimal_places=2, default="1.99")
 
     class Meta:
         verbose_name_plural = "Order Items"
