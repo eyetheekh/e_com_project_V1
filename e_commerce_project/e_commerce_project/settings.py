@@ -78,8 +78,12 @@ WSGI_APPLICATION = 'e_commerce_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'ecom-database-1',
+        'USER': 'mysuperuser',
+        'PASSWORD': 'mysuperuser',
+        'HOST': 'ecom-database-1.cnygcmm8ua42.ap-south-1.rds.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
