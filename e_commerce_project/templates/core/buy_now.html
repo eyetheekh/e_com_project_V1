@@ -1,0 +1,102 @@
+{% extends 'core/base.html' %} {% load static %} {% block content %}
+<div class="container bg-body-tertiary" id="cart-list">
+    <div class="row my-4 align-items-stretch">
+        <!-- Product Table -->
+        <div class="col-xl-7 col-lg-6 col-md-12 col-sm-12">
+            <p class="display-6 m-2">Checkout</p>
+            <p class="lead m-2">
+                <small>There are {{total_cart_items}} product{{total_cart_items|pluralize}}
+                    in your cart.</small>
+            </p>
+            <div class="container">
+                {% if default_address %}
+                <p class="lead text-success m-2">Default Address</p>
+                <div class="border rounded rounded-3 p-4 m-1">
+                    <p class="lead">{{default_address.address}}</p>
+                    <p class="lead"><small>Contact:</small> {{default_address.contact}}</p>
+                    <p class="lead"><small>e-Mail:</small> {{default_address.email}}</p>
+                </div>
+                {%else%}
+                <p class="lead p-3">No Default Address Added</p>
+                {%endif%}
+                <div class="border rounded rounded-3 p-3 bg-body-secondary">
+                    <p class="lead">Add New Default Address</p>
+                    <form method="post">
+                        {%csrf_token%}
+                        {{address_form.address}}
+                        {{address_form.contact}}
+                        {{address_form.email}}
+                        <span class="lead">Default Address:</span> {{address_form.default_address}}
+                        <br>
+                        <input type="submit" class="btn btn-block btn-success" name="" id="">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order-->
+        <div class="col-xl-5 col-lg-6 col-md-12 col-sm-12 bg-body-tertiary p-4 rounded">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-dark fw-bold lead">Your Order</span>
+                <span class="text-dark fw-bold">Total ${{cart_total|floatformat:2}}</span>
+            </div>
+
+            <hr class="bg-light mb-4" />
+            <a href="{% url 'core:cart_view' %}" class="btn btn-block btn-success mb-2">Go Back To Cart</a>
+            <table class="table table-bordered table-hover">
+                <thead class="table-secondary">
+                    <tr>
+                        <th scope="col">Product</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Price</th>
+                        <th scope="col" class="text-center">Quantity</th>
+                        <th scope="col">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product,price_and_quantity in cart_dict_with_price_and_qty.items %}
+                    <tr>
+                        <td>
+                            <a class="text-dark" href="{% url 'core:product_detail_view' product.PID %}">{{
+                                product.title }}</a>
+                        </td>
+                        <td class="p-1 text-center">
+                            <a href="{% url 'core:product_detail_view' product.PID %}">
+                                <img src="{{ product.image.url }}" class="img-fluid img-thumbnail" alt=""
+                                    style="max-width: 90px; max-height: auto" />
+                            </a>
+                        </td>
+                        <td class="text-center">${{ product.price }}</td>
+                        <td class="text-center text-muted">x{{ price_and_quantity.quantity}}</td>
+                        <td class="text-center">
+                            ${{ price_and_quantity.sub_total}}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <hr class="bg-light mb-4" />
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-dark">Shipping:</span>
+                <span class="text-dark font-weight-bold">FREE SHIPPING</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-dark">Total:</span>
+                <span class="text-dark font-weight-bold">${{cart_total|floatformat:2}}</span>
+            </div>
+            {% if default_address %}
+            <div class="bg-body-secondary text-center p-3 rounded rounded-3">
+                {{form.render}}
+            </div>
+            {% else %}
+            <div class="">
+                <a href="{% url 'core:home' %}" class="btn btn-success btn-block">Continue Shopping</a>
+                <a href="{% url 'core:update-address' %}" class="btn btn-danger btn-block">Update Address</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{%endblock%}

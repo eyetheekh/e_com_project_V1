@@ -1,0 +1,39 @@
+html {
+    scroll-behavior: smooth;
+}
+
+.scrollable-div {
+    overflow-x: auto;
+    /* Allow horizontal scrolling */
+    white-space: nowrap;
+    /* Prevent link text from wrapping */
+    /* Border for the scrollable div */
+    padding: 10px;
+    /* Adjust padding */
+}
+
+.scrollable-div a {
+    display: inline-block;
+    /* Display links in a row */
+    padding: 5px 10px;
+    /* Adjust link padding */
+    margin-right: 10px;
+    /* Adjust spacing between links */
+    text-decoration: none;
+    /* Remove underline */
+    color: #333;
+    /* Link color */
+}
+
+.scrollable-div a:hover {
+    color: blue;
+    /* Change link color to blue on hover */
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+    /* Show dropdown menu on hover */
+}
+
+/*  */
+

@@ -1,0 +1,110 @@
+{% extends 'core/base.html' %} {% load static %} {% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-xl-2 col-sm-12 col-md-3 col-lg-2 bg-body-tertiary">
+            <div class="p-3">
+                <a href="" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none">
+                    <svg class="bi pe-none me-2" width="30" height="24"></svg>
+                    <span class="fs-5">Profile</span>
+                </a>
+                <hr />
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <li>
+                        <a href="{% url 'core:dashboard' %}" id="order" class="nav-link link-body-emphasis">
+                            <svg class="bi pe-none me-2" width="14" height="14">
+                                <use xlink:href="#speedometer2"></use>
+                            </svg>
+                            Orders
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'core:dashboard-address'  %}" id="address" class="nav-link link-body-emphasis">
+                            <svg class="bi pe-none me-2" width="14" height="14">
+                                <use xlink:href="#grid"></use>
+                            </svg>
+                            Address
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'core:my_reviews' %}" id="address" class="nav-link link-body-emphasis">
+                            <svg class="bi pe-none me-2" width="14" height="14">
+                                <use xlink:href="#grid"></use>
+                            </svg>
+                            My Reviews
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link link-body-emphasis">
+                            <svg class="bi pe-none me-2" width="14" height="14">
+                                <use xlink:href="#grid"></use>
+                            </svg>
+                            Settings
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'userauth:logout' %}" class="nav-link link-body-emphasis">
+                            <svg class="bi pe-none me-2" width="14" height="14">
+                                <use xlink:href="#grid"></use>
+                            </svg>
+                            Logout
+                        </a>
+                    </li>
+                </ul>
+                <hr />
+            </div>
+        </div>
+        <!-- Main Content -->
+        <div class="col-xl-10 col-sm-12 col-md-9 col-lg-10 my-3 p-3">
+            <!-- <div class="container">
+        <div class="row bg-dark">
+          <div class="col bg-info">
+            <p class="display-6">Welcome {{request.user}}</p>
+          </div>
+          <div class="col bg-secondary">f</div>
+        </div>
+      </div> -->
+
+            <div class="row">
+                <div class="col-12">
+                    <p class="display-6">Welcome {{request.user}}. <span class="lead">Your
+                            Addres{{address|pluralize}}</span></p>
+                    <div id="address-section" class="rounded rounded-3 bg-body-tertiary p-3 m-2">
+                        <div class="border border-2 p-3 text-center">
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-secondary">
+                                    <tr>
+                                        <th scope="col">NO</th>
+                                        <th scope="col">Address</th>
+                                        <th scope="col">Contact</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Default</th>
+                                        <th scope="col">Update</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in address %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ i.address }}</td>
+                                        <td>{{ i.contact }}</td>
+                                        <td>${{ i.email }}</td>
+                                        {% if i.default_address %}
+                                        <td class="text-success fw-bold">Default</td>
+                                        {%else%}
+                                        <td class="text-danger fw-bold">Not Default</td>
+                                        {%endif%}
+                                        <td><a href="{% url 'core:dashboard-address_update' i.id %}"
+                                                class="btn btn-primary btn-block">Update Address</a></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

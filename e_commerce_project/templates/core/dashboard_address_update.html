@@ -1,0 +1,14 @@
+{% extends 'core/base.html' %} {% load static %} {% block content %}
+<div class="border rounded rounded-3 p-3 bg-body-secondary">
+    <p class="lead">Update Address</p>
+    <form method="post">
+        {%csrf_token%}
+        {{form.address}}
+        {{form.contact}}
+        {{form.email}}
+        <span class="lead">Default Address:</span> {{form.default_address}}
+        <br>
+        <input type="submit" class="btn btn-block btn-success" name="" id="">
+    </form>
+</div>
+{%endblock%}

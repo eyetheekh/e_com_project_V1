@@ -1,0 +1,94 @@
+<div class="container bg-body-tertiary" id="cart_async">
+    <div class="row my-4 align-items-stretch">
+        <!-- Product Table -->
+        <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12">
+            <p class="display-6 m-2">Cart</p>
+            <p class="lead m-2">
+                <small>There are {{total_cart_items}} product{{total_cart_items|pluralize}} in your cart.</small>
+            </p>
+            <table class="table table-bordered table-hover">
+                <thead class="table-secondary">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Price</th>
+                        <th scope="col" class="text-center">Quantity</th>
+                        <th scope="col">Subtotal</th>
+                        <th scope="col" class="text-center">Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product,price_and_quantity in cart_dict_with_price_and_qty.items %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            <a class="text-dark" href="{% url 'core:product_detail_view' product.PID %}">
+                                {{ product.title }}
+                            </a>
+                        </td>
+                        <td class="p-1 text-center">
+                            <a href="{% url 'core:product_detail_view' product.PID %}">
+                                <img src="{{ product.image.url }}" class="img-fluid img-thumbnail"
+                                    style="max-width: 150px; max-height: auto" alt="" />
+                            </a>
+                        </td>
+                        <td>${{ product.price_after_discount|floatformat }}</td>
+                        <td class="text-center">
+                            <div class="input-group input-group-sm">
+                                <!--  -->
+                                <input class="form-control w-50 " type="number" id="no_of_quantity_{{product.id}}"
+                                    value="{{ price_and_quantity.quantity }}">
+                                <button class="btn btn-success btn-sm update-product" data-id="{{product.id}}">
+                                    <i class="bi bi-arrow-clockwise"></i>
+                                </button>
+                                <!--  -->
+                            </div>
+                        </td>
+
+                        <!-- Calculate subtotal -->
+                        <td>${{price_and_quantity.sub_total}}</td>
+                        <!-- Calculate subtotal -->
+                        <td class="text-center">
+                            <button class="btn btn-danger btn-sm delete-product" data-id="{{product.id}}">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Summary of Cart -->
+        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 bg-body-tertiary p-4 rounded">
+            <h4 class="text-dark mb-4">Summary of Cart</h4>
+            <hr class="bg-light mb-4" />
+            <!-- Subtotal -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-dark">Subtotal:</span>
+                <span class="text-dark font-weight-bold">${{cart_total|floatformat:2}}</span>
+            </div>
+            <!-- Shipping -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-dark">Shipping:</span>
+                <span class="text-dark font-weight-bold">FREE SHIPPING</span>
+            </div>
+            <!-- Total -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-dark">Total:</span>
+                <span class="text-dark font-weight-bold">${{cart_total|floatformat:2}}</span>
+            </div>
+            <hr class="bg-light mb-4" />
+            {% if total_cart_items %}
+            <a href="{% url 'core:checkout_view' %}" class="btn btn-info btn-block">
+                Proceed to Checkout
+            </a>
+            {%else%}
+            <a href="{% url 'core:home' %}" class="btn btn-success btn-block m-2">
+                Continue Shopping
+            </a>
+            {%endif%}
+        </div>
+    </div>
+</div>

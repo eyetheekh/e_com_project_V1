@@ -1,0 +1,86 @@
+{% extends 'core/base.html' %} {% load static %} {% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-xl-2 col-sm-12 col-md-3 col-lg-2 bg-body-tertiary">
+      <div class="p-3">
+        <a href="" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none">
+          <svg class="bi pe-none me-2" width="30" height="24"></svg>
+          <span class="fs-5">Profile</span>
+        </a>
+        <hr />
+        <ul class="nav nav-pills flex-column mb-auto">
+          <li>
+            <a href="{% url 'core:dashboard' %}" class="nav-link link-body-emphasis">
+              <svg class="bi pe-none me-2" width="14" height="14">
+                <use xlink:href="#speedometer2"></use>
+              </svg>
+              Dashboard
+            </a>
+          </li>
+        </ul>
+        <hr />
+      </div>
+    </div>
+    <!-- Main Content -->
+    <div class="col-xl-10 col-sm-12 col-md-9 col-lg-10 my-3 p-3">
+      <!-- <div class="container">
+        <div class="row bg-dark">
+          <div class="col bg-info">
+            <p class="display-6">Welcome {{request.user}}</p>
+          </div>
+          <div class="col bg-secondary">f</div>
+        </div>
+      </div> -->
+      <div class="container">
+        <p class="display-6">Welcome {{request.user}}.</p>
+      </div>
+      <div class="col">
+        <div id="orders-section">
+          <table class="table table-bordered table-hover">
+            <thead class="table-secondary">
+              <tr>
+                <th scope="col">INVOICE NO: {{order.Invoice}}</th>
+                <th scope="col">Date</th>
+                <th scope="col">Product</th>
+                <th scope="col">Status</th>
+                <th scope="col">Paid Status</th>
+                <th scope="col" class="text-center">Quantity</th>
+                <th scope="col">Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in order_items %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ i.order.order_date|date:"d M,Y" }}</td>
+                <td>{{ i.item }}</td>
+                <td>{{ order.order_status|title }}</td>
+                {% if i.order.paid_status %}
+                <td class="text-success fw-bold">Paid</td>
+                {% else %}
+                <td class="text-danger fw-bold">Unpaid</td>
+                {% endif %}
+                <td class="text-center">{{ i.quantity }}</td>
+                <td>${{ order.order_price }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="6" class="text-end">Subtotal</td>
+                <td>${{ order.order_price }}</td>
+              </tr>
+              <!-- You can calculate and display tax here -->
+              <tr>
+                <td colspan="6" class="text-end">Total</td>
+                <td>${{ order.order_price}}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%endblock%}

@@ -1,0 +1,111 @@
+{% extends 'core/base.html' %} {% load static %} {% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-xl-2 col-sm-12 col-md-3 col-lg-2 bg-body-tertiary">
+            <div class="p-3">
+                <a href="" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none">
+                    <svg class="bi pe-none me-2" width="30" height="24"></svg>
+                    <span class="fs-5">Profile</span>
+                </a>
+                <hr />
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <li>
+                        <a href="{% url 'core:dashboard' %}" id="order" class="nav-link link-body-emphasis">
+                            <svg class="bi pe-none me-2" width="14" height="14">
+                                <use xlink:href="#speedometer2"></use>
+                            </svg>
+                            Orders
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'core:dashboard-address' %}" id="address" class="nav-link link-body-emphasis">
+                            <svg class="bi pe-none me-2" width="14" height="14">
+                                <use xlink:href="#grid"></use>
+                            </svg>
+                            Address
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'core:my_reviews' %}" id="address" class="nav-link link-body-emphasis">
+                            <svg class="bi pe-none me-2" width="14" height="14">
+                                <use xlink:href="#grid"></use>
+                            </svg>
+                            My Reviews
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link link-body-emphasis">
+                            <svg class="bi pe-none me-2" width="14" height="14">
+                                <use xlink:href="#grid"></use>
+                            </svg>
+                            Settings
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'userauth:logout' %}" class="nav-link link-body-emphasis">
+                            <svg class="bi pe-none me-2" width="14" height="14">
+                                <use xlink:href="#grid"></use>
+                            </svg>
+                            Logout
+                        </a>
+                    </li>
+                </ul>
+                <hr />
+            </div>
+        </div>
+        <!-- Main Content -->
+        <div class="col-xl-10 col-sm-12 col-md-9 col-lg-10 my-3 p-3">
+            <!-- <div class="container">
+        <div class="row bg-dark">
+          <div class="col bg-info">
+            <p class="display-6">Welcome {{request.user}}</p>
+          </div>
+          <div class="col bg-secondary">f</div>
+        </div>
+      </div> -->
+
+            <div class="row">
+                <div class="col-12">
+                    <p class="display-6">Welcome {{request.user}}. <span class="lead">Your Orders</span></p>
+                    <div id="orders-section">
+                        {% if reviews %}
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-secondary">
+                                <tr>
+                                    <th scope="col">INVOICE</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Products</th>
+                                    <th scope="col">Rating</th>
+                                    <th scope="col">Review</th>
+                                    <th scope="col">Delete</th>
+                                    <th scope="col">View</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in reviews %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ i.review_date }}</td>
+                                    <td>{{ i.product|title }}</td>
+                                    <td>{{ i.rating }}/5</td>
+                                    <td>{{ i.review|truncatechars:15 }}</td>
+                                    <td> <a href="{% url 'core:delete-review' i.id %}"><i
+                                                class="bi bi-trash-fill"></i></a></td>
+                                    <td>
+                                        <a href="{% url 'core:product_detail_view' i.product.PID %}">View</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {%else%}
+                        <p class="display-6">You Have Not Reviewed Any Products Yet</p>
+                        {%endif%}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

@@ -1,0 +1,444 @@
+{%extends 'core/base.html' %}
+{%load static %}
+{% block title %}Home
+{%endblock%}
+
+{% block content %}
+<div class="container-fluid">
+    <!--  scrollspy -->
+    <div id="scrollable-div" class="scrollable-div border-top border-bottom my-1" data-bs-spy="scroll"
+        data-bs-target="#scrollable-div" data-bs-offset="0" style="background-color:aliceblue;">
+        <a href="#scroll-1">Featured</a>
+        <a href="#scroll-2">Exotic</a>
+        <a href="#scroll-3">Latest</a>
+        <a href="#">Link 6</a>
+        <a href="#">Link 7</a>
+        <a href="#">Link 8</a>
+        <a href="#">Link 9</a>
+        <a href="#">Link 10</a>
+        <!-- Add more links as needed -->
+    </div>
+    <!--  scrollspy -->
+
+    <!-- div with home banner and carousel  -->
+    <div class="container-fluid">
+        <!-- start banner -->
+        <div style="background-size: cover;background-position: center;background-repeat: no-repeat;background-image: url('{% static 'images/pexels-wdnet-230544.jpg' %}');"
+            class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-body-tertiary">
+            <div class="col-md-12 p-lg-5 mx-auto my-5">
+                <h1 class="display-3 fw-bold text-white">Shop Smarter, Live Better</h1>
+                <h3 class="fw-normal text-white mb-3">
+                    Find what you love, at prices you'll adore
+                </h3>
+                <div class="d-flex gap-3 justify-content-center lead fw-normal">
+                    <a class="icon-link text-white" href="#">
+                        Start Shopping
+                        <svg class="bi">
+                            <use xlink:href="#chevron-right"></use>
+                        </svg>
+                    </a>
+                    <a class="icon-link text-white" href="#">
+                        Buy
+                        <svg class="bi">
+                            <use xlink:href="#chevron-right"></use>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- end banner -->
+    </div>
+    <!-- end div with home banner and carousel  -->
+
+    <!-- search bar -->
+    <div class="container m-3 mx-auto">
+        <div class="row justify-content-center rounded-pill " style="background-color: rgb(196, 255, 255);">
+            <div class="col-lg-10 py-lg-5 py-md-4 py-sm-3 py-3" style="background-color: rgb(182, 251, 228);">
+                <form class="d-flex" role="search" method="get" action="{% url 'core:search' %}">
+                    <input required class="form-control rounded-pill py-lg-3 py-md-3 py-sm-3 py-3 me-2" type="search"
+                        placeholder="Search" aria-label="Search" name="q" />
+                    <button class="btn btn-dark rounded-pill" type="submit">
+                        Search
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- end search bar -->
+
+    <!-- start cards -->
+    <div class="container px-4 py-3 rounded rounded-3" id="custom-cards" style="background-color:  azure;">
+        <p class="pb-1 fs-1 lead ">Our Categories</p>
+
+        <!-- ribbon -->
+        <div class="scrollable-div text-center border-bottom border-top  shadow-sm my-1"
+            style="background-color: floralwhite;">
+            <a href="{% url 'core:category_list_view' %}" class="btn btn-outline-secondary">All Categories</a>
+            <a href="" class="btn btn-outline-secondary">All Products</a>
+            <a href="{% url 'core:vendor_list_view' %}" class="btn btn-outline-secondary">All Vendors</a>
+            {% for i in categories_context %}
+            <a href="{% url 'core:category_detail_view' i.CID %}" class="btn btn-outline-secondary">{{i.title}}</a>
+            {%endfor%}
+        </div>
+        <!-- ribbon -->
+
+        <div class="row row-cols-1 row-cols-lg-3 align-items-stretch justify-content-center  g-4 py-5">
+            {% for c in categories %}
+            <div class="col">
+                <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
+                    style="background-image: url('{{c.image.url}}');background-repeat: no-repeat;background-position: center;background-size: cover;">
+                    <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+                        <h3 class="pt-5 mt-5 mb-4 text-center display-6 lh-1 fw-bold text-dark">
+                            <a href="{% url 'core:category_detail_view' c.CID %}"
+                                class="btn btn-sm rounded-3 btn-dark">{{c.title}}</a>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            {%endfor%}
+        </div>
+    </div>
+    <!-- end cards -->
+
+
+
+    <!-- Featured Products -->
+    <h2 id="scroll-1" class="display-4 text-center my-5 rounded rounded-4 p-5"
+        style="background-color: rgb(255, 239, 161);">Featured Products</h2>
+    <div class="container bg-body-secondary align-items-center shadow my-4">
+        <div class="row " style="background-color: rgb(255, 245, 197);">
+            <div class="col-12">
+                <div class="owl-carousel owl-theme p-2 m-2 mx-auto">
+                    {% for i in feartured_products %}
+                    <div class="item align-items-center">
+                        <div class="card shadow-sm border-1 rounded-3" style="max-width: 250px; position: relative">
+                            <div class="position-absolute top-0 start-0 translate-middle badge bg-danger"
+                                style="z-index: 1; margin-top: 25px; margin-left: 40px">
+                                -{{i.discount_percentage|floatformat:0}}% Off
+                            </div>
+                            <a href="{% url 'core:product_detail_view' i.PID %}" class="text-decoration-none text-dark">
+                                <div class="ratio ratio-4x3">
+                                    <img src="{{ i.image.url }}" class="card-img-top img-fluid" width="100%"
+                                        height="100%" role="img" preserveAspectRatio="xMidYMid slice"
+                                        focusable="false" />
+                                </div>
+                            </a>
+                            <div class="card-body" style="background-color: rgb(252, 246, 171);">
+                                <a href="" class="text-decoration-none text-dark">
+                                    <p class="card-title text-center fs-5">{{i.title}}</p>
+                                </a>
+                                <p class="card-title text-center fs-6">
+                                    $<span
+                                        class="card-title text-center fs-6 current-product-price-{{i.id}}">{{i.price_after_discount}}</span>
+                                </p>
+                                <p class="card-text text-center">
+                                    <small class="text-body-secondary fs-6">Sold by {{i.vendor}}</small>
+                                </p>
+                                <p class="card-text">{{i.description|truncatechars:30}}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group bg-body-tertiary mt-auto">
+                                        <a href="{% url 'core:buy_now' i.PID %}" class="btn btn-primary mx-1">Buy
+                                            Now</a>
+                                        <input type="hidden" id="no_of_quantity_{{i.id}}" value="1">
+                                        <button type="button" class="btn btn-outline-secondary add-to-cart-btn"
+                                            data-index="{{i.id}}" id="add-to-cart-btn">
+                                            Add To Cart
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {%endfor%}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End Featured Products -->
+
+    <!-- category banner 2 -->
+    <div id="scroll-2" class="container-fluid banner bg-secondary my-5"
+        style="background-image: url({% static 'images/colorful-collage-fruits-texture-close-up_23-2149870264.png' %});">
+        <div class="container py-5">
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-6">
+                    <div class="py-4">
+                        <h1 class="display-3 text-white">Fresh Exotic Fruits</h1>
+                        <p class="fw-normal display-3 text-danger mb-4">in Our Store</p>
+                        <p class="mb-4 text-white">
+                            The generated Lorem Ipsum is therefore always free from repetition
+                            injected humour, or non-characteristic words etc.
+                        </p>
+                        <a href="{% url 'core:category_detail_view' 'CAT:5yYW8xgT4t' %}"
+                            class="banner-btn btn border-2 border-white rounded-pill text-white py-3 px-5">BUY</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="position-relative">
+                        <img src="" class="img-fluid w-100 rounded" alt="" />
+                        <div class="d-flex align-items-center justify-content-center bg-white rounded-circle position-absolute"
+                            style="width: 140px; height: 140px; top: 0; left: 0">
+                            <h1 style="font-size: 100px">1</h1>
+                            <div class="d-flex flex-column">
+                                <span class="h2 mb-0">50$</span>
+                                <span class="h4 text-muted mb-0">kg</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end category banner 2 -->
+
+    <!--  -->
+
+
+    <!-- Latest products -->
+    <div id="scroll-3" class="container p-5 my-4" style="background-color: ivory;">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-center mb-4 display-6 pb-4">Latest Products</h2>
+            </div>
+        </div>
+
+        <div class="row row-cols-2 row-cols-md-4 row-cols-sm-1 g-4" style="background-color: thistle;">
+            {% for product in latest_products %}
+            <div class="col p-2">
+                <div class="card mb-3 position-relative">
+                    <a class="text-decoration-none" href="{% url 'core:product_detail_view' product.PID %}">
+                        <img src="{{ product.image.url }}" class="card-img-top" alt="Product Image"
+                            style="max-height: 200px" />
+                    </a>
+                    <div class="card-body" style="background-color: seashell;">
+                        <div class="position-absolute top-0 start-0 translate-middle badge bg-danger"
+                            style="z-index: 1; margin-top: 25px; margin-left: 40px">
+                            -{{product.discount_percentage|floatformat}}% Off
+                        </div>
+                        <h5 class="card-title lead">{{ product.title }}
+                            <span>${{product.price_after_discount}}</span>
+                        </h5>
+                        <p class="card-text">{{ product.desc }}</p>
+                        <small class="text-muted">Added: {{ product.date_added|date }}</small>
+                    </div>
+                    <div class="card-footer d-flex justify-content-center align-items-center">
+                        <a href="{% url 'core:buy_now' product.PID %}" class="btn btn-primary mx-1">Buy Now</a>
+                        <input type="hidden" id="no_of_quantity_{{product.id}}" value="1">
+                        <button type="button" class="btn btn-outline-secondary add-to-cart-btn"
+                            data-index="{{product.id}}" id="add-to-cart-btn">
+                            Add To Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- end Latest -->
+
+
+    <!--  -->
+    <div class="container">
+        <div class="row justify-content-center align-items-center my-4" style="background-color: #f87217;">
+            <div class="col-lg-8 text-center">
+                <div class="section-title">
+                    <h1>Deals of the Week</h1>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore
+                        magna aliqua.</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <img class="img-fluid d-block mx-auto" src="{% static 'images/c5.jpg' %}" alt="">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="row" style="background-color: blanchedalmond;">
+                    {% for i in deal_products %}
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 mb-4 p-3">
+                        <div class="card h-50">
+                            <div class="position-absolute top-0 fs-6 start-0 translate-middle badge bg-danger"
+                                style="z-index: 1; margin-top: 25px; margin-left: 40px">
+                                -{{i.discount_percentage|floatformat}}% Off
+                            </div>
+                            <a href="{% url 'core:product_detail_view' i.PID %}" class=""><img src="{{i.image.url}}"
+                                    style="height: 210px;" class="card-img-top" alt="{{i.title}}"></a>
+                            <div class="card-body" style="background-color: aliceblue;">
+                                <a href="{% url 'core:product_detail_view' i.PID %}"
+                                    class="text-decoration-none text-dark">
+                                    <h5 class="card-title">{{i.title}}</h5>
+                                </a>
+                                <p class="text-muted fs-5">Price: ${{i.price}}</p>
+                                <p class="fs-5 text-success">Deal Price: ${{i.price_after_discount}}</p>
+                            </div>
+                            <div style="background-color: white;"
+                                class="card-footer d-flex justify-content-center align-items-center">
+                                <a href="{% url 'core:buy_now' i.PID %}" class="btn btn-primary mx-1">Buy Now</a>
+                                <input type="hidden" id="no_of_quantity_{{i.id}}" value="1">
+                                <button type="button" class="btn btn-outline-secondary add-to-cart-btn"
+                                    data-index="{{i.id}}" id="add-to-cart-btn">
+                                    Add To Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {%endfor%}
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--  -->
+
+    <!--  -->
+    <section class="pt-3">
+        <div class="container">
+            <div class="row gx-3">
+                <main class="col-lg-9">
+                    <div class="card-banner p-5 bg-primary rounded-5" style="height: 350px;">
+                        <div style="max-width: 500px;">
+                            <h2 class="text-white">
+                                Great products with <br>
+                                best deals
+                            </h2>
+                            <p class="text-white">No matter how far along you are in your sophistication as an amateur
+                                astronomer, there is always one.</p>
+                            <a href="#" class="btn btn-light shadow-0 text-primary"> View more </a>
+                        </div>
+                    </div>
+                </main>
+                <aside class="col-lg-3">
+                    <div class="card-banner h-100 rounded-5" style="background-color: #f87217;">
+                        <div class="card-body text-center pb-5">
+                            <h5 class="pt-5 text-white">Amazing Gifts</h5>
+                            <p class="text-white">No matter how far along you are in your sophistication</p>
+                            <a href="#" class="btn btn-outline-light"> View more </a>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+            <!-- row //end -->
+        </div>
+        <!-- container end.// -->
+    </section>
+    <!--  -->
+    <!-- carousel -->
+    <div class="container p-5">
+        <div id="myCarousel" class="carousel slide my-4 p-3" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active"
+                    aria-label="Slide 1" aria-current="true"></button>
+                <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"
+                    class=""></button>
+                <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"
+                    class=""></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{% static 'images/online-store-development-500x500.jpeg' %}" class="bd-placeholder-img"
+                        width="100%" height="700px" aria-hidden="true" preserveAspectRatio="xMidYMid slice"
+                        focusable="false">
+                    <div class="container">
+                        <div class="carousel-caption text-start">
+                            <h1>Great Place To Shop</h1>
+                            <p class="opacity-75">
+                                Some representative placeholder content for the first slide of the
+                                carousel.
+                            </p>
+                            <p><a class="btn btn-lg btn-primary" href="#">Sign up today</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'images/pexels-brettjordan-5437587.jpg' %}" class="bd-placeholder-img"
+                        width="100%" height="700px" aria-hidden="true" preserveAspectRatio="xMidYMid slice"
+                        focusable="false">
+                    <div class="container">
+                        <div class="carousel-caption">
+                            <h1>Pay Securely With Paypal</h1>
+                            <p>
+                                Some representative placeholder content for the second slide of
+                                the carousel.
+                            </p>
+                            <p><a class="btn btn-lg btn-primary" href="#">Learn more</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'images/ecommerce-2140603_640.jpg' %}" class="bd-placeholder-img" width="100%"
+                        height="700px" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <div class="container">
+                        <div class="carousel-caption text-end">
+                            <h1>Shopping Made Conveniently</h1>
+                            <p>
+                                Some representative placeholder content for the third slide of
+                                this carousel.
+                            </p>
+                            <p><a class="btn btn-lg btn-primary" href="#">Browse gallery</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+    <!-- end carousel -->
+
+    <!-- start 2 box Section -->
+    <div class="container">
+        <div class="w-100 my-md-3 ps-md-3">
+            <div class="text-bg-dark me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+                <div class="my-3 py-3">
+                    <h2 class="display-5">Another headline</h2>
+                    <p class="lead">And an even wittier subheading.</p>
+                </div>
+                <div class="bg-body-tertiary shadow-sm mx-auto"
+                    style="width: 80%; height: 300px; border-radius: 21px 21px 0 0">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end 2 box Section -->
+    <!--  -->
+
+    <!--  -->
+    <!--  -->
+    <div class="container my-3 bg-body-tertiary rounded rounded-4 p-2">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-lg-4">
+                <div class="">
+                    <p class="display-2 text-center"><i class="bi bi-truck"></i></p>
+                    <h4>Free shipping</h4>
+                    <p>Fusce urna quam, euismod sit amet mollis quis, vestibulum quis velit. Vesti bulum mal
+                        esuada aliquet libero viverra cursus. </p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="">
+                    <p class="display-2 text-center"><i class="bi bi-cash-coin"></i></p>
+                    <h4>100% Money back </h4>
+                    <p>Urna quam, euismod sit amet mollis quis, vestibulum quis velit. Vesti bulum mal esuada
+                        aliquet libero viverra cursus. </p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="">
+                    <p class="display-2 text-center"><i class="bi bi-telephone-inbound"></i></p>
+                    <h4>Online support 24/7</h4>
+                    <p>Urna quam, euismod sit amet mollis quis, vestibulum quis velit. Vesti bulum mal esuada
+                        aliquet libero viverra cursus. </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  -->
+</div>
+{%endblock%}

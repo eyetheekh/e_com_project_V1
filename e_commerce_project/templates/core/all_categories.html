@@ -1,0 +1,24 @@
+{%extends 'core/base.html' %}
+{%load static %}
+{%block title%}Categories{%endblock title%}
+{%block content%}
+<!-- start cards -->
+<div class="container px-4 py-5" id="custom-cards">
+    <h2 class="pb-2 border-bottom">Our Categories</h2>
+    <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
+        {% for c in all_categories %}
+        <div class="col">
+            <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
+                style="background-image: url('{{c.image.url}}');background-repeat: no-repeat;background-position: center;background-size: cover;">
+                <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+                    <h3 class="pt-5 mt-5 mb-4 text-center display-6 lh-1 fw-bold text-dark"><a
+                            href="{% url 'core:category_detail_view' c.CID %}"
+                            class="btn btn-sm rounded-3 btn-dark">{{c.title}}</a></h3>
+                </div>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+</div>
+<!-- end cards -->
+{%endblock%}

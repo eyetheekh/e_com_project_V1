@@ -1,0 +1,44 @@
+{%extends 'core/base.html' %}
+{%load static %}
+
+{%block title%}Vendors{%endblock title%}
+
+{%block content%}
+<!-- start cards -->
+<div class="container px-4 py-5" id="custom-cards">
+    <h2 class="pb-2 border-bottom">{{vendors.count}} Vendor{{vendors.count|pluralize}}</h2>
+</div>
+<div class="container">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        {% for p in vendors %}
+        <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6">
+            <div class="card shadow-sm border-1 rounded-pill rounded-3" style="max-width: 250px; position: relative;">
+                <a href="{% url 'core:vendor_detail_view' p.VID %}" class="text-decoration-none text-dark">
+                    <div class="ratio ratio-4x3">
+                        <img src="{{ p.image.url }}"
+                            class="bd-placeholder-img card-img-top img-responsive border-1 border-bottom  rounded-top"
+                            width="100%" height="100%" role="img" preserveAspectRatio="xMidYMid slice"
+                            focusable="false">
+                    </div>
+                    <div class="card-body bg-body-tertiary">
+
+                        <p class="card-title text-center fs-5">{{p.title}}</p>
+                </a>
+                <p class="card-text text-center"><small>Rating: {{p.authentic_rating}}</small></p>
+                <p class=" card-text">{{p.description}}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group bg-body-tertiary">
+                        <a href="{% url 'core:vendor_detail_view' p.VID %}"
+                            class="btn btn-sm btn-outline-secondary">Profile
+                        </a>
+                        <a href="{% url 'core:vendor_shop_view' p.VID %}"
+                            class="btn btn-sm btn-outline-secondary">Shop</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {%endfor%}
+</div>
+<!-- end cards -->
+{%endblock%}

@@ -1,0 +1,22 @@
+{%extends 'core/base.html' %}
+{%block title%}Login{%endblock title%}
+
+{%block content%}
+<div class="container">
+    <div class="row justify-content-center ">
+        <div class="col-6 mb-5">
+            <p class="display-4 text-start my-5">Login</p>
+            <form action="" method="post">
+                {%csrf_token%}
+                <input required type="text" name="username" id="" placeholder="Username"
+                    class="form-control w-75 my-1 p-2 border shadow-sm"><br>
+                <input required type="password" name="password" id="" placeholder="Password"
+                    class="form-control w-75 my-1 p-2 border shadow-sm"><br>
+                <input class="btn btn-lg btn-success" type="submit" name="" id="">
+            </form>
+            <p class="lead my-3">Don't an account? <a href="{% url 'userauth:register' %}"
+                    class="btn btn-outline-dark btn-sm">Register</a></p>
+        </div>
+    </div>
+</div>
+{%endblock%}

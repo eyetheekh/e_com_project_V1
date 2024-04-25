@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %} {% load static %} {% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col m-2 p-4 border shadow-sm rounded text-center">
+            <h3 class="text-danger ">Payment Failed!</h3>
+            <div class="p-2">
+                <p>
+                    <a href="{% url 'core:cart_view' %}" class="btn btn-block btn-success">Go To Cart</a>
+                    <a href="{% url 'core:checkout_view' %}" class="btn btn-block btn-success">Go To Chechout</a>
+                    <a href="{% url 'core:home' %}" class="btn btn-block btn-success">Go To Home</a>
+                </p>
+            </div>
+            <div class="p-2">
+                <p>
+                    <a href="" class="btn btn-block text-primary">Having an issue, Get in Touch!</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

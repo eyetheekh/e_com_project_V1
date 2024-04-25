@@ -1,0 +1,120 @@
+{% extends 'core/base.html' %} {% block title %}{{category.title}}{%endblock%} {% block content %} {%load static %}
+
+<!-- start category ribbon -->
+<div class="container-fluid m-0 my-3">
+  <img class="img-fluid w-100" style="height: 30vh; background-position: center; background-size: contain"
+    src="{{category.image.url}}" alt="" />
+</div>
+<!-- end category ribbon -->
+
+<div class="container mb-4">
+  <p class="display-5 text-center my-0 py-0">{{category.title}}</p>
+  <p class="text-center text-success my-0 py-2 text-dark">
+    <small>{{products_in_category.count}}
+      Product{{products_in_category.count|pluralize}}</small>
+  </p>
+</div>
+
+<!-- search bar -->
+<div class="container m-2 mx-auto">
+  <div class="row justify-content-center rounded-pill">
+    <div class="col-lg-10 py-lg-2 py-md-2 py-sm-1 py-1">
+      <form class="d-flex" role="search" method="get" action="{% url 'core:search' %}">
+        <input class="form-control rounded-pill py-lg-3 py-md-3 py-sm-3 py-3 me-2" type="search" required name="q"
+          placeholder="Search For Products" aria-label="Search" />
+        <button class="btn btn-dark rounded-pill" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- end search bar -->
+
+<div class="container m-1 p-1 mx-auto">
+  <div class="row justify-content-center align-items-stretch">
+    <div class="col-lg-12 col-md-12 bg-body-secondary rounded-3 m-2">
+      <!-- start album -->
+      <div class="album py-5">
+        <div class="container">
+          {% if products_in_category %}
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {% for p in products_in_category %}
+            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+              <div class="card shadow-sm border-1 rounded-pill rounded-3" style="max-width: 250px">
+                <div class="position-absolute top-0 start-0 translate-middle badge bg-danger"
+                  style="z-index: 1; margin-left: 20px">
+                  -{{ p.discount_percentage|floatformat:0 }}% Off
+                </div>
+                <a href="{% url 'core:product_detail_view' p.PID %}" class="text-decoration-none text-dark">
+                  <div class="ratio ratio-4x3">
+                    <img src="{{ p.image.url }}"
+                      class="bd-placeholder-img card-img-top img-responsive border-1 border-bottom rounded-top"
+                      width="100%" height="100%" role="img" preserveAspectRatio="xMidYMid slice" focusable="false" />
+                  </div>
+                </a>
+                <div class="card-body bg-body-tertiary">
+                  <a href="{% url 'core:product_detail_view' p.PID %}" class="text-decoration-none text-dark">
+                    <p class="card-title text-center fs-5">{{ p.title }}</p>
+                  </a>
+                  <p class="card-title text-center fs-6">${{ p.price_after_discount }}</p>
+                  <p class="card-text text-center">
+                    <small class="text-body-secondary fs-6">Sold by {{ p.vendor }}</small>
+                  </p>
+                  <p class="card-text">{{ p.description }}</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group bg-body-tertiary">
+                      <a href="{% url 'core:buy_now' p.PID %}" class="btn btn-outline-secondary">
+                        Buy
+                    </a>
+                      <input type="hidden" id="no_of_quantity_{{p.id}}" value="1">
+                      <button type="button" class="btn btn-outline-secondary btn-sm add-to-cart-btn"
+                        data-index="{{p.id}}" id="add-to-cart-btn">
+                        Add To Cart
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <div class="w-100">
+            <p class="display-5 text-danger text-center">
+              No Products In This Category!
+            </p>
+            <div class="container">
+              <p class="display-5 text-center my-5">Browse Other Categories</p>
+            </div>
+          </div>
+          <!-- Carousel for other categories -->
+          <div class="container bg-body-secondary align-items-center my-4">
+            <div class="row bg-body-tertiary">
+              <div class="col-12">
+                <div class="owl-carousel owl-theme p-2 m-2 mx-auto">
+                  {% for c in categories_context %}
+                  <div class="item bg-secondary align-items-center">
+                    <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
+                      style="background-image: url('{{ c.image.url }}');background-repeat: no-repeat;background-position: center;background-size: cover;">
+                      <div class="text-white text-shadow-1">
+                        <h3 class="pt-5 mt-5 mb-4 text-center display-6 lh-1 fw-bold text-dark">
+                          <a href="{% url 'core:category_view' c.CID %}" class="btn btn-sm rounded-3 btn-dark">
+                            {{c.title}}</a>
+                        </h3>
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End of Carousel for other categories -->
+          {% endif %}
+        </div>
+      </div>
+      <!-- end album -->
+    </div>
+
+    {%endblock content%}
+  </div>
+</div>

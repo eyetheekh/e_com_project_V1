@@ -1,0 +1,99 @@
+{%extends 'core/base.html' %}
+{%block title%}{{ vendor.title}}{%endblock title%}
+{%block content%}
+{%load static %}
+
+<div class="container my-4 bg-body-tertiary rounded-3">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-lg-9 col-md-12 ">
+            <!-- Adjusted the column size for larger screens and made it full width for smaller screens -->
+            <div class="row">
+                <div class="col-lg-6 col-md-7 position-relative text-center">
+                    <img src="{{ vendor.image.url }}" class="img-fluid img-hover" alt="">
+                </div>
+                <div class="col-lg-6 col-md-5 bg-body-tertiary d-flex justify-content-center align-items-center">
+                    <div class="text-center">
+                        <p class="display-5">{{ vendor.title }}</p>
+                        <p><small class="fs-6">Rating: {{ vendor.authentic_rating}}</small></p>
+                        <p><small class="fs-6">{{ vendor.description }}</small></p>
+                        <p class="mb-1 fs-6">Response Time: {{ vendor.message_response_time }}</p>
+                        <p class="mb-1 fs-6">Shipping On Time: {{ vendor.shipping_time }}</p>
+                        </p>
+                        <p><small class="fs-6">Days Return: {{ vendor.return_days }}</small></p>
+                        <p><small class="fs-6">Warrenty Period: {{ vendor.warrenty_period }}</small></p>
+                        <div class="btn-group">
+                            <a href="{% url 'core:vendor_shop_view' vendor.VID %}" class="btn btn-sm btn-dark m-1">Visit
+                                Shop</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-12 bg-body-secondary rounded-3 border">
+            <div class="row justify-content-center align-items-center m-2 p-2">
+                <div class="col-md-6 col-sm-6 col-lg-12 col-xl-12">
+                    <p class="lead fw-normal text-success">Address<i class="bi bi-check-circle-fill"></i>: </p>
+                    <p>{{vendor.address}}</p>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-12 col-xl-12">
+                    <h6>Contact</h6>
+                    <p class="m-1"><small>Contact:{{vendor.contact}}</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- start album -->
+<h2 class="p-3 my-4 border-bottom display-5 text-center">{{vendor.title}}'s Products</h2>
+<div class="album py-5">
+    <div class="container">
+        <div class="row bg-body-tertiary">
+            <div class="owl-carousel owl-theme p-2 m-2 mx-auto">
+                {% for i in products_of_vendor %}
+                <div class="item bg-secondary align-items-center">
+                    <div class="card shadow-sm border-1 rounded-3" style="max-width: 250px; position: relative">
+                        <div class="position-absolute top-0 start-0 translate-middle badge bg-danger"
+                            style="z-index: 1; margin-top: 25px; margin-left: 40px">
+                            -{{i.discount_percentage|floatformat:0}}% Off
+                        </div>
+                        <a href="{% url 'core:product_detail_view' i.PID %}" class="text-decoration-none text-dark">
+                            <div class="ratio ratio-4x3">
+                                <img src="{{ i.image.url }}" class="card-img-top img-fluid" width="100%" height="100%"
+                                    role="img" preserveAspectRatio="xMidYMid slice" focusable="false" />
+                            </div>
+                        </a>
+                        <div class="card-body bg-body-secondary">
+                            <a href="{% url 'core:product_detail_view' i.PID %}" class="text-decoration-none text-dark">
+                                <p class="card-title text-center fs-5">{{i.title}}</p>
+                            </a>
+                            <p class="card-title text-center fs-6">
+                                $<span
+                                    class="card-title text-center fs-6 current-product-price-{{i.id}}">{{i.price_after_discount}}</span>
+                            </p>
+                            <p class="card-text text-center">
+                                <small class="text-body-secondary fs-6">Sold by {{i.vendor}}</small>
+                            </p>
+                            <p class="card-text">{{i.description|truncatechars:30}}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group bg-body-tertiary mt-auto">
+                                    <a href="{% url 'core:buy_now' i.PID %}" class="btn btn-outline-secondary">
+                                        Buy
+                                    </a>
+                                    <input type="hidden" id="no_of_quantity_{{i.id}}" value="1">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm add-to-cart-btn"
+                                        data-index="{{i.id}}" id="add-to-cart-btn">
+                                        Add To Cart
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {%endfor%}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end album -->
+{%endblock%}

@@ -1,0 +1,245 @@
+{%extends 'core/base.html' %}
+{%load static %}
+{%block title%}{{product.title}}{%endblock title%}
+{%block content%}
+<div class="container my-4 bg-body-tertiary rounded-3">
+    <div class="row justify-content-center align-items-center ">
+        <div class="col-lg-9 col-md-12 ">
+            <div class="row">
+                <div class="col-lg-6 col-md-7 position-relative text-center">
+                    <div class="position-absolute top-0 start-0 translate-middle badge bg-danger"
+                        style="z-index: 1; margin-top: 25px; margin-left: 60px;">
+                        -{{ product.discount_percentage|floatformat:0 }}% Off
+                    </div>
+
+                    <!-- Main Image -->
+                    <div class="main-image">
+                        <img style="height: 45vh;width: auto;" src="{{ product.image.url }}" class="img-fluid img-hover" alt="Main Image" id="mainImage">
+                    </div>
+                    <!-- End Main Image -->
+
+                    <!-- Small Images -->
+                    <div class="small-images mt-3">
+                        <div class="row">
+                            {% for i in product_images %}
+                            <div class="col-4">
+                                <img  src="{{ i.images.url }}" class="img-fluid img-thumbnail small-image"
+                                    alt="Small Image" data-src="{{ i.images.url }}">
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- End Small Images -->
+                </div>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const mainImage = document.getElementById('mainImage');
+                        const smallImages = document.querySelectorAll('.small-image');
+
+                        smallImages.forEach(function (smallImage) {
+                            smallImage.addEventListener('click', function () {
+                                const tempSrc = mainImage.getAttribute('src');
+                                const newSrc = this.getAttribute('data-src');
+
+                                mainImage.setAttribute('src', newSrc);
+                                this.setAttribute('src', tempSrc);
+                                this.setAttribute('data-src', tempSrc);
+                            });
+                        });
+                    });
+                </script>
+
+                <div style="background-color: ivory;"
+                    class="col-lg-6 col-md-5  d-flex justify-content-center align-items-center">
+                    <div class="text-center">
+                        <p class="display-5 ">{{ product.title }}</p>
+                        <p><small class="fs-5 ">MRP: <del>${{ product.price }}</del></small></p>
+                        <p><small class="fs-6 text-success">-{{ product.discount_percentage|floatformat:0 }}%
+                                OFF</small></p>
+                        <!-- price class  -->
+                        <p class="lead mb-1 fw-normal ">
+                            <span class="lead mb-1 fw-normal current-product-price-{{product.id}}"><span>Offer Price:
+                                </span>
+                                ${{product.price_after_discount}}</span>
+                        </p>
+                        <!-- price class  -->
+                        <p><small class="fs-6">{{ product.description }}</small></p>
+                        <p><small class="fs-6">
+                                {% if product.tags.count >= 1 %}
+                                <ul style="list-style-type:none">
+                                    Tags:{% for tag in product.tags.all %}
+                                    <li class=""><a class="text-decoration-none"
+                                            href="{% url 'core:tag_detail_view' tag.name %}">#{{tag.name}}</a></li>
+                                    {%endfor%}
+                                </ul>
+                                {%endif%}
+                            </small>
+                        </p>
+                        <p><small class="">Sold by: {{ product.vendor }}</small></p>
+                        <!--  -->
+                        <p class="text-center">
+                            <input type="number" id="no_of_quantity_{{product.id}}" value="1"
+                                class="form-control d-inline-block w-25">
+                        </p>
+
+                        <!--  -->
+                        <div class="btn-group">
+                            <a href="{% url 'core:buy_now' product.PID %}" class="btn btn-outline-dark">
+                                Buy
+                            </a>
+                            <button type="button" class="btn btn btn-dark mx-1 add-to-cart-btn"
+                                data-index="{{product.id}}" id="add-to-cart-btn">
+                                Add ToCart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-12 bg-body-secondary rounded-3 border">
+            <div class="row justify-content-center align-items-center m-2 p-2">
+                <div class="col-md-4 col-sm-12 col-lg-12 col-xl-12">
+                    {% if address.status %}
+                    <p class="lead fw-normal text-success">Verified Address<i class="bi bi-check-circle-fill"></i>: </p>
+                    <p>{{address.address}}</p>
+                    {%else%}
+                    <p class="lead fw-normal text-danger">Unverified Address<i class="bi bi-x-circle-fill"></i>: </p>
+                    <p>{{address.address}}</p>
+                    {%endif%}
+                </div>
+                <div class="col-md-4 col-sm-12 col-lg-12 col-xl-12">
+                    <h6>Returns</h6>
+                    <p class="m-1"><small>Returns: {{product.vendor.return_days}}</small></p>
+                    <p class="m-1"><small>Shipping Days: {{product.vendor.shipping_time}}</small></p>
+                    <p class="m-1"><small>Warrenty Period: {{product.vendor.warrenty_period}}</small></p>
+                </div>
+                <div class="col-md-4 col-sm-12 col-lg-12 col-xl-12">
+                    <h6>Vendor</h6>
+                    <p class="mb-1"><small><a
+                                href="{% url 'core:vendor_detail_view' product.vendor.VID %}">Name:{{product.vendor.title}}</small></a>
+                    </p>
+                    <p>
+                        <img src="{{product.vendor.image.url}}" class="img-fluid " alt="">
+                    </p>
+                    <p class="m-1"><small>Authentic Rating: {{product.vendor.authentic_rating}}%</small></p>
+                    <p class="m-1"><small>Response Time: {{product.vendor.message_response_time}}%</small></p>
+                    <p class="m-1"><small>Contact: {{product.vendor.contact}}</small></p>
+                    <!-- <p>Address:{{product.vendor.address}}%</p>  -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="background-color: rgb(245, 249, 252);" class="row align-items-start justify-content-center border">
+        <h3 class="lead text-center mt-5 fs-3">{{reviews_of_product.count}} Review{{reviews_of_product|pluralize}}</h3>
+        <h4 class="lead text-center"><span class="badge bg-primary ">{{average_rating|floatformat}}&nbsp;<i
+                    class="bi bi-star-fill"></i> </span></h4>
+
+        <!-- review accordions -->
+        <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 p-3 my-2">
+            <div id="display_after_review_posted"></div>
+            {% for i in reviews_of_product %}
+            <div class="card border m-3 p-3">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h5 class="card-title">{{ i.user }}</h5>
+                            <p class="card-text mb-1">{{ i.date|date:"h:i d M, Y" }}</p>
+                        </div>
+                        <div class="col-md-4 text-md-end">
+                            <span class="badge bg-primary">{{ i.rating }}/5 <i class="bi bi-star-fill"></i></span>
+                        </div>
+                    </div>
+                    <p class="card-text">{{ i.review }}</p>
+                </div>
+            </div>
+            {%empty%}
+            <div class="card border m-3 p-3">
+                <div class="card-body">
+                    <p class="card-text text-center lead">No Review For this Product.</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <!-- end review accordions -->
+
+        <!--product review form -->
+        {% if can_review %}
+        <div class="col-xl-4 col-lg-10 col-md-12 col-sm-12 p-3 my-2 border shadow-sm" id="review_div">
+            <h3 class="display-6">Add Review</h3>
+            <form action="" class="p-3" id="review_Form" method="POST">
+                {% csrf_token %}
+                {{ form.review }}
+                {{ form.rating }}<br>
+                {% if request.user.is_authenticated %}
+                <button type="submit" class="btn btn-success mx-2">Submit</button>
+                {%else%}
+                <a href="{% url 'userauth:login' %}" class="btn btn-success mx-2">Login or Register To Review</a>
+                {%endif%}
+            </form>
+        </div>
+        {%endif%}
+        <!--product review form -->
+    </div>
+</div>
+{% if related_products%}
+<div class="container">
+    <p class="display-5 text-center my-5">Related Products</p>
+</div>
+
+<div class="container align-items-center  my-4 ">
+    <div class="row" style="background-color: powderblue;">
+        <div class="col-12">
+            <div class="owl-carousel owl-theme p-2 m-2 mx-auto">
+                {% for i in related_products %}
+                <div class="item bg-secondary align-items-center">
+                    <div class=" card shadow-sm border-1 rounded-3" style="max-width: 250px; position: relative;">
+                        <div class="position-absolute top-0 start-0 translate-middle badge bg-danger"
+                            style="z-index: 1; margin-top: 25px; margin-left: 40px;">
+                            -{{i.discount_percentage|floatformat:0}}% Off
+                        </div>
+                        <a href="{% url 'core:product_detail_view' i.PID %}" class="text-decoration-none text-dark">
+                            <div class="ratio ratio-4x3">
+                                <img src="{{ i.image.url }}" class="card-img-top img-fluid" width="100%" height="100%"
+                                    role="img" preserveAspectRatio="xMidYMid slice" focusable="false">
+                            </div>
+                        </a>
+                        <div class="card-body " style="background-color: ivory;">
+                            <a href="{% url 'core:product_detail_view' i.PID %}" class="text-decoration-none text-dark">
+                                <p class="card-title text-center fs-5">{{i.title}}</p>
+                            </a>
+                            <p class="card-title text-center fs-6">$
+                                <span class="current-product-price-{{i.id}}">{{i.price_after_discount}}</span>
+                            </p>
+                            <p class="card-text text-center"><small class="text-body-secondary fs-6">Sold by
+                                    {{i.vendor}}</small></p>
+                            <p class="card-text">{{i.description}}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group bg-body-tertiary">
+                                    <a href="{% url 'core:buy_now' i.PID %}" class="btn btn-outline-secondary">
+                                        Buy
+                                    </a>
+                                    <!--  -->
+                                    <input type="hidden" id="no_of_quantity_{{i.id}}" value="1">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm add-to-cart-btn"
+                                        data-index="{{i.id}}" id="add-to-cart-btn">
+                                        Add To Cart
+                                    </button>
+                                    <!--  -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {%endfor%}
+            </div>
+        </div>
+    </div>
+</div>
+{%else%}
+<div class="container">
+    <p class="display-5 text-center my-5">No Related Products</p>
+</div>
+{%endif%}
+{%endblock%}
